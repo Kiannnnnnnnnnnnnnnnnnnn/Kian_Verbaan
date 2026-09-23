@@ -1,212 +1,356 @@
+let rectCol1 = 200
+let rectCol2 = 410
+let rectCol3 = 620
+
+let rectRow1 = 200
+let rectRow2 = 410
+let rectRow3 = 620
+
+let rectH = 180
+let rectW = 180
+
+let square1 = 0
+let square2 = 0
+let square3 = 0
+let square4 = 0
+let square5 = 0
+let square6 = 0
+let square7 = 0
+let square8 = 0
+let square9 = 0
+
+let square1color = "darkgrey"
+let square2color = "darkgrey"
+let square3color = "darkgrey"
+let square4color = "darkgrey"
+let square5color = "darkgrey"
+let square6color = "darkgrey"
+let square7color = "darkgrey"
+let square8color = "darkgrey"
+let square9color = "darkgrey"
+
+let playerTurn = 1
+
+let backGroundLineRedX1 = -50
+let backGroundLineRedX2 = -150
+let backGroundLineRedX3 = 20
+let backGroundLineRedX4 = 240
+
+
+
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(1000, 1000);
+
 }
 
-let Car1 = {
-  rectX: 100,
-  rectY: 300,
-  rectWidth: 100,
-  rectHeight: 50
-};
-
-let Car1Wheels = {
-  WheelsX: 110,
-  WheelsY: 350,
-  WheelsDia: 30,
-}
-
-let Car2Wheels = {
-  WheelsX: 190,
-  WheelsY: 350,
-  WheelsDia: 30,
-}
-
-let Car2 = {
-  rectX: 100,
-  rectY: 500,
-  rectWidth: 100,
-  rectHeight: 50
-}
-
-let sunX = -50
-let car1X = -50
-let car1Speed = 0.2
-let car2X = -50
-let car2Speed = 0.4
-
-let RedXPos = -760
-let RedOffXPos = 760
-let YellowXPos = -760
-let YellowOffXPos = 760
-let GreenXPos = 760
-let GreenOffXPos = -760
 
 function draw() {
-  background(173, 146, 230);
+  background(220);
 
   strokeWeight(0);
 
-// sun
+if (playerTurn == 1) {
+  fill(150, 0, 0);
+  rect(0, 0, 1000, 1000);
 
-  fill(239, 142, 56);
+  fill(100, 0, 0);
+  backGroundLineRedX1 += 0.03 * deltaTime;
+  backGroundLineRedX2 += 0.01 * deltaTime;
+  backGroundLineRedX3 += 0.02 * deltaTime;
+  backGroundLineRedX4 += 0.04 * deltaTime;
+  rect(backGroundLineRedX1, 57, 200, 20);
+  rect(backGroundLineRedX2, 98, 150, 40);
+  rect(backGroundLineRedX3, 183, 270, 50);
+  rect(backGroundLineRedX4, 316, 100, 10);
+  rect(backGroundLineRedX2, 354, 240, 30);
+  rect(backGroundLineRedX1, 399, 240, 10);
+  rect(backGroundLineRedX4, 429, 300, 60);
+  rect(backGroundLineRedX2, 509, 300, 40);
+  rect(backGroundLineRedX3, 584, 220, 20);
+  rect(backGroundLineRedX4, 657, 220, 50);
+  rect(backGroundLineRedX1, 723, 220, 40);
+  rect(backGroundLineRedX4, 781, 220, 10);
+  rect(backGroundLineRedX2, 831, 220, 30);
+  rect(backGroundLineRedX1, 878, 220, 20);
+  rect(backGroundLineRedX3, 921, 220, 10);
+  rect(backGroundLineRedX1, 949, 220, 40);
 
-  sunX += 0.03 * deltaTime;
-  circle(sunX, 30, 20);
-
-  if (sunX >= 900) {
-  sunX = -50
+  if (backGroundLineRedX1 == 1300) {
+    backGroundLineRedX1 = -300
   }
-// mountains
 
-  fill(100, 100, 100);
-  triangle(-50, 250, 75, 110, 200, 250);
-  triangle(110, 200, 160, 100, 210, 200);
-  triangle(170, 200, 280, 90, 390, 200);
-  triangle(320, 200, 390, 75, 460, 200);
-  triangle(320, 250, 530, 120, 720, 250);
-  triangle(550, 280, 650, 140, 750, 280);
-  triangle(650, 280, 750, 105, 850, 280);
-
-// hills
-
-  fill(0, 100, 0);
-  ellipse(320, 280, 800, 200);
-
-  fill(0, 110, 0);
-  ellipse(520, 320, 800, 200);
-
-  fill(0, 120, 0);
-  ellipse(140, 350, 600, 200);
-  fill(0, 130, 0);
-  rect(0, 320, 800, 350);
-
-// road
-
-  fill(130, 130, 130);
-  rect(0, 350, 800, 300);
-
-  fill(100, 100, 100);
-  rect(0, 350, 800, 20);
-
-  fill(200, 200, 200);
-  rect(50, 455, 100, 20);
-  rect(200, 455, 100, 20);
-  rect(350, 455, 100, 20);
-  rect(500, 455, 100, 20);
-  rect(650, 455, 100, 20);
-
-// tree trunks
-
-  fill(101, 67, 33);
-  rect(80, 250, 10, 50);
-  rect(150, 220, 10, 50);
-  rect(280, 250, 10, 50);
-
-  rect(400, 230, 5, 25);
-  rect(460, 240, 5, 25);
-  rect(520, 280, 5, 25);
-  rect(630, 230, 5, 25);
-  rect(700, 270, 5, 25);
-
-  rect(500, 200, 2, 10);
-  rect(380, 200, 2, 10);
-  rect(300, 190, 2, 10);
-  rect(250, 220, 2, 10);
-  rect(220, 200, 2, 10);
-  rect(120, 220, 2, 10);
-
-// traffic light
-
-  fill(100, 100, 100);
-  rect(750, 280, 20, 50);
-  rect(740, 240, 40, 60);
-
-  fill(255, 0, 0);
-  circle(RedXPos, 250, 10);
-
-  fill(210, 3, 3);
-  circle(RedOffXPos, 250, 10);
-
-  fill(255, 165, 0);
-  circle(YellowXPos, 270, 10);
-
-  fill(203, 177, 0);
-  circle(YellowOffXPos, 270, 10);
-
-  fill(0, 255, 0);
-  circle(GreenXPos, 290, 10);
-
-  fill(18, 174, 0);
-  circle(GreenOffXPos, 290, 10);
-
-// car 1
-  fill(50, 50, 50);
-  car1X += car1Speed * deltaTime;
-  if (car1X >= 900) {
-    car1X = -150;
-  }
-  rect(car1X, 500, 100, 30);
-  rect(car1X, 500, 100, 30);
-
-  car2X += car2Speed * deltaTime;
-  if (car2X >= 900) {
-    car2X = -150;
-  }
-  rect(car2X, 400, 100, 30);
-
+} else {
+  fill(0, 0, 150);
+  rect(0, 0, 1000, 1000);
 }
 
-let keyPress = 1;
-
-// traffic light
-function keyPressed() {
-  switch (keyCode) {
-    case ENTER:
-      keyPress += 1;
-
-      if (keyPress >= 4) {
-        keyPress = 1;
-        car1Speed = 0.2;
-        car2Speed = 0.4;
-        GreenOffXPos = -760
-        GreenXPos = 760
-        RedOffXPos = 760
-        YellowOffXPos = 760
-        RedXPos = -760
-        YellowXPos = -760
-      }
-
-      else if (keyPress == 1) {
-        car1Speed = 0.2;
-        car2Speed = 0.4;
-        GreenOffXPos = -760
-        GreenXPos = 760
-        RedOffXPos = 760
-        RedXPos = -760
-        YellowOffXPos = 760
-        YellowXPos = -760
-
-      }
-      else if (keyPress == 2) {
-        car1Speed = 0.1;
-        car2Speed = 0.2;
-        YellowOffXPos = -760
-        YellowXPos = 760
-        RedOffXPos = 760
-        RedXPos = -760
-        GreenOffXPos = 760
-        GreenXPos = -760
-      }
-      else if (keyPress == 3) {
-        car1Speed = 0;
-        car2Speed = 0;
-        RedOffXPos = -760
-        RedXPos = 760
-        GreenXPos = -760
-        YellowXPos = -760
-        GreenOffXPos = 760
-        YellowOffXPos = 760
-      }
-
+if (square1 == 0) {
+  if (
+    mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
+    mouseY > rectCol1 && mouseY < rectCol1 + rectH
+  ) {
+    square1color = "grey";
+  } else {
+    square1color = "darkgrey";
   }
+}
+fill(square1color);
+rect(rectRow1, rectCol1, rectW, rectH);
+
+if (square2 == 0) {
+  if (
+    mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
+    mouseY > rectCol1 && mouseY < rectCol1 + rectH
+  ) {
+    square2color = "grey";
+  } else {
+    square2color = "darkgrey";
+  }
+}
+fill(square2color);
+rect(rectRow2, rectCol1, rectW, rectH);
+
+if (square3 == 0) {
+  if (
+    mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
+    mouseY > rectCol1 && mouseY < rectCol1 + rectH
+  ) {
+    square3color = "grey";
+  } else {
+    square3color = "darkgrey";
+  }
+}
+fill(square3color);
+rect(rectRow3, rectCol1, rectW, rectH);
+
+if (square4 == 0) {
+  if (
+    mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
+    mouseY > rectCol2 && mouseY < rectCol2 + rectH
+  ) {
+    square4color = "grey";
+  } else {
+    square4color = "darkgrey";
+  }
+}
+fill(square4color);
+rect(rectRow1, rectCol2, rectW, rectH);
+
+if (square5 == 0) {
+  if (
+    mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
+    mouseY > rectCol2 && mouseY < rectCol2 + rectH
+  ) {
+    square5color = "grey";
+  } else {
+    square5color = "darkgrey";
+  }
+}
+fill(square5color);
+rect(rectRow2, rectCol2, rectW, rectH);
+
+if (square6 == 0) {
+  if (
+    mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
+    mouseY > rectCol2 && mouseY < rectCol2 + rectH
+  ) {
+    square6color = "grey";
+  } else {
+    square6color = "darkgrey";
+  }
+}
+fill(square6color);
+rect(rectRow3, rectCol2, rectW, rectH);
+
+if (square7 == 0) {
+  if (
+    mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
+    mouseY > rectCol3 && mouseY < rectCol3 + rectH
+  ) {
+    square7color = "grey";
+  } else {
+    square7color = "darkgrey";
+  }
+}
+fill(square7color);
+rect(rectRow1, rectCol3, rectW, rectH);
+
+if (square8 == 0) {
+  if (
+    mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
+    mouseY > rectCol3 && mouseY < rectCol3 + rectH
+  ) {
+    square8color = "grey";
+  } else {
+    square8color = "darkgrey";
+  }
+}
+fill(square8color);
+rect(rectRow2, rectCol3, rectW, rectH);
+
+if (square9 == 0) {
+  if (
+    mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
+    mouseY > rectCol3 && mouseY < rectCol3 + rectH
+  ) {
+    square9color = "grey";
+  } else {
+    square9color = "darkgrey";
+  }
+}
+fill(square9color);
+rect(rectRow3, rectCol3, rectW, rectH);
+}
+
+
+function mousePressed(){
+if (playerTurn == 1) {
+  if (
+    mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
+    mouseY > rectCol1 && mouseY < rectCol1 + rectH && 
+    square1 == 0
+  ) {
+    square1 = 1
+    playerTurn = 2
+    square1color = "red" 
+  } else if (
+    mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
+    mouseY > rectCol1 && mouseY < rectCol1 + rectH && 
+    square2 == 0
+  ) {
+    square2 = 1
+    playerTurn = 2
+    square2color = "red" 
+  } else if (
+    mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
+    mouseY > rectCol1 && mouseY < rectCol1 + rectH && 
+    square3 == 0
+  ) {
+    square3 = 1
+    playerTurn = 2
+    square3color = "red" 
+  } else if (
+    mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
+    mouseY > rectCol2 && mouseY < rectCol2 + rectH && 
+    square4 == 0
+  ) {
+    square4 = 1
+    playerTurn = 2
+    square4color = "red"
+  } else if (
+    mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
+    mouseY > rectCol2 && mouseY < rectCol2 + rectH && 
+    square5 == 0
+  ) {
+    square5 = 1
+    playerTurn = 2
+    square5color = "red"
+  } else if (
+    mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
+    mouseY > rectCol2 && mouseY < rectCol2 + rectH && 
+    square6 == 0
+  ) {
+    square6 = 1
+    playerTurn = 2
+    square6color = "red"
+  } else if (
+    mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
+    mouseY > rectCol3 && mouseY < rectCol3 + rectH && 
+    square7 == 0
+  ) {
+    square7 = 1
+    playerTurn = 2
+    square7color = "red"
+  } else if (
+    mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
+    mouseY > rectCol3 && mouseY < rectCol3 + rectH && 
+    square8 == 0
+  ) {
+    square8 = 1
+    playerTurn = 2
+    square8color = "red"
+  } else if (
+    mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
+    mouseY > rectCol3 && mouseY < rectCol3 + rectH && 
+    square9 == 0
+  ) {
+    square9 = 1
+    playerTurn = 2
+    square9color = "red"
+  }
+} else {
+  if (
+    mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
+    mouseY > rectCol1 && mouseY < rectCol1 + rectH && 
+    square1 == 0
+  ) {
+    square1 = 2
+    playerTurn = 1
+    square1color = "blue" 
+  } else if (
+    mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
+    mouseY > rectCol1 && mouseY < rectCol1 + rectH && 
+    square2 == 0
+  ) {
+    square2 = 2
+    playerTurn = 1
+    square2color = "blue" 
+  } else if (
+    mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
+    mouseY > rectCol1 && mouseY < rectCol1 + rectH && 
+    square3 == 0
+  ) {
+    square3 = 2
+    playerTurn = 1
+    square3color = "blue" 
+  } else if (
+    mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
+    mouseY > rectCol2 && mouseY < rectCol2 + rectH && 
+    square4 == 0
+  ) {
+    square4 = 2
+    playerTurn = 1
+    square4color = "blue"
+  } else if (
+    mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
+    mouseY > rectCol2 && mouseY < rectCol2 + rectH && 
+    square5 == 0
+  ) {
+    square5 = 2
+    playerTurn = 1
+    square5color = "blue"
+  } else if (
+    mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
+    mouseY > rectCol2 && mouseY < rectCol2 + rectH && 
+    square6 == 0
+  ) {
+    square6 = 2
+    playerTurn = 1
+    square6color = "blue"
+  } else if (
+    mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
+    mouseY > rectCol3 && mouseY < rectCol3 + rectH && 
+    square7 == 0
+  ) {
+    square7 = 2
+    playerTurn = 1
+    square7color = "blue"
+  } else if (
+    mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
+    mouseY > rectCol3 && mouseY < rectCol3 + rectH && 
+    square8 == 0
+  ) {
+    square8 = 2
+    playerTurn = 1
+    square8color = "blue"
+  } else if (
+    mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
+    mouseY > rectCol3 && mouseY < rectCol3 + rectH && 
+    square9 == 0
+  ) {
+    square9 = 2
+    playerTurn = 1
+    square9color = "blue"
+  }
+}
 }
