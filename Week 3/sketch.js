@@ -30,11 +30,13 @@ let square8color = "darkgrey"
 let square9color = "darkgrey"
 
 let playerTurn = 1
+let win = 0
+let squaresClicked = 0
 
-let backGroundLineRedX1 = -50
-let backGroundLineRedX2 = -150
-let backGroundLineRedX3 = 20
-let backGroundLineRedX4 = 240
+let backGroundLineRedX = 500
+
+let backGroundColorRed = "darkred"
+let backGroundColorBlue = "darkblue"
 
 
 
@@ -50,44 +52,46 @@ function draw() {
   strokeWeight(0);
 
 if (playerTurn == 1) {
-  fill(150, 0, 0);
-  rect(0, 0, 1000, 1000);
+  fill(150, 0, 0)
+} else {
+  fill(0, 0, 150)
+}
+rect(0, 0, 1000, 1000);
 
+if (playerTurn == 1) {
   fill(100, 0, 0);
-  backGroundLineRedX1 += 0.03 * deltaTime;
-  backGroundLineRedX2 += 0.01 * deltaTime;
-  backGroundLineRedX3 += 0.02 * deltaTime;
-  backGroundLineRedX4 += 0.04 * deltaTime;
-  rect(backGroundLineRedX1, 57, 200, 20);
-  rect(backGroundLineRedX2, 98, 150, 40);
-  rect(backGroundLineRedX3, 183, 270, 50);
-  rect(backGroundLineRedX4, 316, 100, 10);
-  rect(backGroundLineRedX2, 354, 240, 30);
-  rect(backGroundLineRedX1, 399, 240, 10);
-  rect(backGroundLineRedX4, 429, 300, 60);
-  rect(backGroundLineRedX2, 509, 300, 40);
-  rect(backGroundLineRedX3, 584, 220, 20);
-  rect(backGroundLineRedX4, 657, 220, 50);
-  rect(backGroundLineRedX1, 723, 220, 40);
-  rect(backGroundLineRedX4, 781, 220, 10);
-  rect(backGroundLineRedX2, 831, 220, 30);
-  rect(backGroundLineRedX1, 878, 220, 20);
-  rect(backGroundLineRedX3, 921, 220, 10);
-  rect(backGroundLineRedX1, 949, 220, 40);
-
-  if (backGroundLineRedX1 == 1300) {
-    backGroundLineRedX1 = -300
+  if (win == 0 && squaresClicked != 9) {
+    backGroundLineRedX -= 0.1 * deltaTime;
   }
 
 } else {
-  fill(0, 0, 150);
-  rect(0, 0, 1000, 1000);
+  fill(0, 0, 100);
+  if (win == 0 && squaresClicked != 9) {
+    backGroundLineRedX += 0.1 * deltaTime;
+  }
 }
+
+if (backGroundLineRedX >= 990) {
+ backGroundLineRedX = 990
+} else if (backGroundLineRedX <= 0) {
+ backGroundLineRedX = 0
+}
+
+rect(backGroundLineRedX, 0, 10, 1000);
+
+if (squaresClicked == 9 && backGroundLineRedX > 500) {
+    textSize(50)
+    text("Red wins!", 100, 100);
+  } else if (squaresClicked == 9 && backGroundLineRedX < 500) {
+    textSize(50)
+    text("Blue wins!", 100, 100);
+  }
 
 if (square1 == 0) {
   if (
     mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
-    mouseY > rectCol1 && mouseY < rectCol1 + rectH
+    mouseY > rectCol1 && mouseY < rectCol1 + rectH && 
+    win == 0
   ) {
     square1color = "grey";
   } else {
@@ -100,7 +104,8 @@ rect(rectRow1, rectCol1, rectW, rectH);
 if (square2 == 0) {
   if (
     mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
-    mouseY > rectCol1 && mouseY < rectCol1 + rectH
+    mouseY > rectCol1 && mouseY < rectCol1 + rectH && 
+    win == 0
   ) {
     square2color = "grey";
   } else {
@@ -113,7 +118,8 @@ rect(rectRow2, rectCol1, rectW, rectH);
 if (square3 == 0) {
   if (
     mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
-    mouseY > rectCol1 && mouseY < rectCol1 + rectH
+    mouseY > rectCol1 && mouseY < rectCol1 + rectH && 
+    win == 0
   ) {
     square3color = "grey";
   } else {
@@ -126,7 +132,8 @@ rect(rectRow3, rectCol1, rectW, rectH);
 if (square4 == 0) {
   if (
     mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
-    mouseY > rectCol2 && mouseY < rectCol2 + rectH
+    mouseY > rectCol2 && mouseY < rectCol2 + rectH && 
+    win == 0
   ) {
     square4color = "grey";
   } else {
@@ -139,7 +146,8 @@ rect(rectRow1, rectCol2, rectW, rectH);
 if (square5 == 0) {
   if (
     mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
-    mouseY > rectCol2 && mouseY < rectCol2 + rectH
+    mouseY > rectCol2 && mouseY < rectCol2 + rectH && 
+    win == 0
   ) {
     square5color = "grey";
   } else {
@@ -152,7 +160,8 @@ rect(rectRow2, rectCol2, rectW, rectH);
 if (square6 == 0) {
   if (
     mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
-    mouseY > rectCol2 && mouseY < rectCol2 + rectH
+    mouseY > rectCol2 && mouseY < rectCol2 + rectH && 
+    win == 0
   ) {
     square6color = "grey";
   } else {
@@ -165,7 +174,8 @@ rect(rectRow3, rectCol2, rectW, rectH);
 if (square7 == 0) {
   if (
     mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
-    mouseY > rectCol3 && mouseY < rectCol3 + rectH
+    mouseY > rectCol3 && mouseY < rectCol3 + rectH && 
+    win == 0
   ) {
     square7color = "grey";
   } else {
@@ -178,7 +188,8 @@ rect(rectRow1, rectCol3, rectW, rectH);
 if (square8 == 0) {
   if (
     mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
-    mouseY > rectCol3 && mouseY < rectCol3 + rectH
+    mouseY > rectCol3 && mouseY < rectCol3 + rectH && 
+    win == 0
   ) {
     square8color = "grey";
   } else {
@@ -191,7 +202,8 @@ rect(rectRow2, rectCol3, rectW, rectH);
 if (square9 == 0) {
   if (
     mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
-    mouseY > rectCol3 && mouseY < rectCol3 + rectH
+    mouseY > rectCol3 && mouseY < rectCol3 + rectH && 
+    win == 0
   ) {
     square9color = "grey";
   } else {
@@ -200,6 +212,73 @@ if (square9 == 0) {
 }
 fill(square9color);
 rect(rectRow3, rectCol3, rectW, rectH);
+
+if (square1 == 1 && square2 == 1 && square3 == 1) {
+textSize(50);
+text("Red wins!", 100, 100);
+win = 1
+} else if (square4 == 1 && square5 == 1 && square6 == 1) {
+textSize(50);
+text("Red wins!", 100, 100);
+win = 1
+} else if (square7 == 1 && square8 == 1 && square9 == 1) {
+textSize(50);
+text("Red wins!", 100, 100);
+win = 1
+} else if (square1 == 1 && square4 == 1 && square7 == 1) {
+textSize(50);
+text("Red wins!", 100, 100);
+win = 1
+} else if (square2 == 1 && square5 == 1 && square8 == 1) {
+textSize(50);
+text("Red wins!", 100, 100);
+win = 1
+} else if (square3 == 1 && square6 == 1 && square9 == 1) {
+textSize(50);
+text("Red wins!", 100, 100);
+win = 1
+} else if (square1 == 1 && square5 == 1 && square9 == 1) {
+textSize(50);
+text("Red wins!", 100, 100);
+win = 1
+} else if (square3 == 1 && square5 == 1 && square7 == 1) {
+textSize(50);
+text("Red wins!", 100, 100);
+win = 1
+} else if (square1 == 2 && square2 == 2 && square3 == 2) {
+textSize(50);
+text("Blue wins!", 100, 100);
+win = 1
+} else if (square4 == 2 && square5 == 2 && square6 == 2) {
+textSize(50);
+text("Blue wins!", 100, 100);
+win = 1
+} else if (square7 == 2 && square8 == 2 && square9 == 2) {
+textSize(50);
+text("Blue wins!", 100, 100);
+win = 1
+} else if (square1 == 2 && square4 == 2 && square7 == 2) {
+textSize(50);
+text("Blue wins!", 100, 100);
+win = 1
+} else if (square2 == 2 && square5 == 2 && square8 == 2) {
+textSize(50);
+text("Blue wins!", 100, 100);
+win = 1
+} else if (square3 == 2 && square6 == 2 && square9 == 2) {
+textSize(50);
+text("Blue wins!", 100, 100);
+win = 1
+} else if (square1 == 2 && square5 == 2 && square9 == 2) {
+textSize(50);
+text("Blue wins!", 100, 100);
+win = 1
+} else if (square3 == 2 && square5 == 2 && square7 == 2) {
+textSize(50);
+text("Blue wins!", 100, 100);
+win = 1
+}
+
 }
 
 
@@ -208,149 +287,167 @@ if (playerTurn == 1) {
   if (
     mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
     mouseY > rectCol1 && mouseY < rectCol1 + rectH && 
-    square1 == 0
+    square1 == 0 && win == 0
   ) {
     square1 = 1
     playerTurn = 2
-    square1color = "red" 
+    square1color = "red"
+    squaresClicked += 1
   } else if (
     mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
     mouseY > rectCol1 && mouseY < rectCol1 + rectH && 
-    square2 == 0
+    square2 == 0 && win == 0
   ) {
     square2 = 1
     playerTurn = 2
     square2color = "red" 
+    squaresClicked += 1
   } else if (
     mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
     mouseY > rectCol1 && mouseY < rectCol1 + rectH && 
-    square3 == 0
+    square3 == 0 && win == 0
   ) {
     square3 = 1
     playerTurn = 2
     square3color = "red" 
+    squaresClicked += 1
   } else if (
     mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
     mouseY > rectCol2 && mouseY < rectCol2 + rectH && 
-    square4 == 0
+    square4 == 0 && win == 0
   ) {
     square4 = 1
     playerTurn = 2
     square4color = "red"
+    squaresClicked += 1
   } else if (
     mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
     mouseY > rectCol2 && mouseY < rectCol2 + rectH && 
-    square5 == 0
+    square5 == 0 && win == 0
   ) {
     square5 = 1
     playerTurn = 2
     square5color = "red"
+    squaresClicked += 1
   } else if (
     mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
     mouseY > rectCol2 && mouseY < rectCol2 + rectH && 
-    square6 == 0
+    square6 == 0 && win == 0
   ) {
     square6 = 1
     playerTurn = 2
     square6color = "red"
+    squaresClicked += 1
   } else if (
     mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
     mouseY > rectCol3 && mouseY < rectCol3 + rectH && 
-    square7 == 0
+    square7 == 0 && win == 0
   ) {
     square7 = 1
     playerTurn = 2
     square7color = "red"
+    squaresClicked += 1
   } else if (
     mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
     mouseY > rectCol3 && mouseY < rectCol3 + rectH && 
-    square8 == 0
+    square8 == 0 && win == 0
   ) {
     square8 = 1
     playerTurn = 2
     square8color = "red"
+    squaresClicked += 1
   } else if (
     mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
     mouseY > rectCol3 && mouseY < rectCol3 + rectH && 
-    square9 == 0
+    square9 == 0 && win == 0
   ) {
     square9 = 1
     playerTurn = 2
     square9color = "red"
+    squaresClicked += 1
   }
 } else {
   if (
     mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
     mouseY > rectCol1 && mouseY < rectCol1 + rectH && 
-    square1 == 0
+    square1 == 0 && win == 0
   ) {
     square1 = 2
     playerTurn = 1
     square1color = "blue" 
+    squaresClicked += 1
   } else if (
     mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
     mouseY > rectCol1 && mouseY < rectCol1 + rectH && 
-    square2 == 0
+    square2 == 0 && win == 0
   ) {
     square2 = 2
     playerTurn = 1
     square2color = "blue" 
+    squaresClicked += 1
   } else if (
     mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
     mouseY > rectCol1 && mouseY < rectCol1 + rectH && 
-    square3 == 0
+    square3 == 0 && win == 0
   ) {
     square3 = 2
     playerTurn = 1
     square3color = "blue" 
+    squaresClicked += 1
   } else if (
     mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
     mouseY > rectCol2 && mouseY < rectCol2 + rectH && 
-    square4 == 0
+    square4 == 0 && win == 0
   ) {
     square4 = 2
     playerTurn = 1
     square4color = "blue"
+    squaresClicked += 1
   } else if (
     mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
     mouseY > rectCol2 && mouseY < rectCol2 + rectH && 
-    square5 == 0
+    square5 == 0 && win == 0
   ) {
     square5 = 2
     playerTurn = 1
     square5color = "blue"
+    squaresClicked += 1
   } else if (
     mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
     mouseY > rectCol2 && mouseY < rectCol2 + rectH && 
-    square6 == 0
+    square6 == 0 && win == 0
   ) {
     square6 = 2
     playerTurn = 1
     square6color = "blue"
+    squaresClicked += 1
   } else if (
     mouseX > rectRow1 && mouseX < rectRow1 + rectW && 
     mouseY > rectCol3 && mouseY < rectCol3 + rectH && 
-    square7 == 0
+    square7 == 0 && win == 0
   ) {
     square7 = 2
     playerTurn = 1
     square7color = "blue"
+    squaresClicked += 1
   } else if (
     mouseX > rectRow2 && mouseX < rectRow2 + rectW && 
     mouseY > rectCol3 && mouseY < rectCol3 + rectH && 
-    square8 == 0
+    square8 == 0 && win == 0
   ) {
     square8 = 2
     playerTurn = 1
     square8color = "blue"
+    squaresClicked += 1
   } else if (
     mouseX > rectRow3 && mouseX < rectRow3 + rectW && 
     mouseY > rectCol3 && mouseY < rectCol3 + rectH && 
-    square9 == 0
+    square9 == 0 && win == 0
   ) {
     square9 = 2
     playerTurn = 1
     square9color = "blue"
+    squaresClicked += 1
   }
 }
 }
