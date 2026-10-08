@@ -160,16 +160,15 @@ function randomLines() {
 function draw() {
   background(172, 109, 106);
 
-  strokeWeight(0);
-  fill(105, 42, 43);
-
-let j = frameCount - 1;
+let j = frameCount;
 
   if (j < 10000) {
+    stroke(255);
     strokeWeight(random(5));
     line(posX1_1[j], posX2_1[j], posY1_1[j], posY2_1[j]);
     strokeWeight(random(5));
     line(posX1_2[j], posX2_2[j], posY1_2[j], posY2_2[j]);
+    stroke(0);
     strokeWeight(random(5));
     line(posX1_3[j], posX2_3[j], posY1_3[j], posY2_3[j]);
     strokeWeight(random(5));
