@@ -11,6 +11,9 @@ let ramen = 0;
 let barX = 51;
 let bounce = 0;
 let menuY = 380;
+let seiaX = 400;
+let chosenX = 400;
+let seiaFacing = 1;
 
 let imgBedroomDay;
 let imgBedroomNight;
@@ -27,6 +30,7 @@ let showGardenNight = false;
 let currentLocation = "bedroom";
 
 let night = false;
+let menuOpen = false;
 
 let buttonBedroom;
 let buttonShop;
@@ -38,6 +42,11 @@ let buttonMinigame;
 let buttonOnigiri;
 let buttonSushi;
 let buttonRamen;
+
+let buttonFeed;
+let buttonFeedOnigiri;
+let buttonFeedSushi;
+let buttonFeedRamen;
 
 let imgSeiaNeutral;
 let imgSeiaSleep;
@@ -100,47 +109,138 @@ function setup() {
   buttonSleep.size(150, 50);
   buttonSleep.mousePressed(sleep);
 
-  buttonOnigiri = createButton("5 coins");
+  buttonOnigiri = createButton("2 coins");
   buttonOnigiri.position(250, 450);
   buttonOnigiri.size(100, 30);
   buttonOnigiri.mousePressed(Onigiri);
   buttonOnigiri.hide();
 
-  buttonSushi = createButton("10 coins");
+  buttonSushi = createButton("5 coins");
   buttonSushi.position(375, 450);
   buttonSushi.size(100, 30);
   buttonSushi.mousePressed(Sushi);
   buttonSushi.hide();
 
-  buttonRamen = createButton("20 coins");
+  buttonRamen = createButton("7 coins");
   buttonRamen.position(500, 450);
   buttonRamen.size(100, 30);
   buttonRamen.mousePressed(Ramen);
   buttonRamen.hide();
+
+  buttonFeed = createButton("Feed");
+  buttonFeed.position(38, 350);
+  buttonFeed.size(100, 30);
+  buttonFeed.mousePressed(Choice);
+  buttonFeed.show();
+
+  buttonFeedOnigiri = createButton("Onigiri");
+  buttonFeedOnigiri.position(275, 508);
+  buttonFeedOnigiri.size(150, 50);
+  buttonFeedOnigiri.mousePressed(FeedOnigiri);
+  buttonFeedOnigiri.hide();
+
+  buttonFeedSushi = createButton("Sushi");
+  buttonFeedSushi.position(425, 508);
+  buttonFeedSushi.size(150, 50);
+  buttonFeedSushi.mousePressed(FeedSushi);
+  buttonFeedSushi.hide();
+
+  buttonFeedRamen = createButton("Ramen");
+  buttonFeedRamen.position(575, 508);
+  buttonFeedRamen.size(150, 50);
+  buttonFeedRamen.mousePressed(FeedRamen);
+  buttonFeedRamen.hide();
+}
+
+function Idle() {
+
+  if (statHunger > 0 && night == false && statHealth > 50) {
+    if (frameCount % 600 === 0) {
+      chosenX = random(200, 550);
+    }
+
+    if (chosenX < seiaX) {
+      seiaX = max(chosenX, seiaX - 1);
+      seiaFacing = 1;
+    } else if (chosenX > seiaX) {
+      seiaX = min(chosenX, seiaX + 1);
+      seiaFacing = -1;
+    }
+  }
+}
+
+function drawSeia(img) {
+  push();
+
+  if (seiaFacing === -1) {
+    translate(seiaX * 2 + 400, 0);
+    scale(-1, 1);
+    image(img, seiaX, 100, 400, 678);
+  } else {
+    image(img, seiaX, 100, 400, 678);
+  }
+
+  pop();
+}
+
+function Choice() {
+
+  menuOpen = !menuOpen;
+
+  if (menuOpen) {
+    buttonFeedOnigiri.show();
+    buttonFeedSushi.show();
+    buttonFeedRamen.show();
+  } else {
+    buttonFeedOnigiri.hide();
+    buttonFeedSushi.hide();
+    buttonFeedRamen.hide();
+  }
+}
+
+function FeedOnigiri() {
+  if (onigiri > 0) {
+  onigiri -= 1;
+  statHunger += 5;
+  }
+}
+
+function FeedSushi() {
+  if (sushi > 0) {
+  sushi -= 1;
+  statHunger += 10;
+  }
+}
+
+function FeedRamen() {
+  if (ramen > 0) {
+  ramen -= 1;
+  statHunger += 20;
+  }
 }
 
 function Onigiri() {
-  if (coins >= 5) {
+  if (coins >= 2) {
   onigiri += 1;
-  coins -= 5;
+  coins -= 2;
   } else {
     return;
   }
 }
 
 function Sushi() {
-  if (coins >= 10) {
+  if (coins >= 5) {
   sushi += 1;
-  coins -= 10;
+  coins -= 5;
   } else {
     return;
   }
 }
 
 function Ramen() {
-  if (coins >= 20) {
+  if (coins >= 7) {
   ramen += 1;
-  coins -= 20;
+  coins -= 7;
   } else {
     return;
   }
@@ -158,6 +258,15 @@ function sleep() {
   buttonSleep.hide();
   buttonWakeUp.show();
   buttonMinigame.hide();
+  buttonFeed.hide();
+  menuY = 340;
+
+  if (menuOpen) {
+    buttonFeedOnigiri.hide();
+    buttonFeedSushi.hide();
+    buttonFeedRamen.hide();
+    menuOpen = false;
+  }
 }
 
 function wakeUp() {
@@ -166,6 +275,8 @@ function wakeUp() {
   buttonSleep.show();
   buttonWakeUp.hide();
   buttonMinigame.hide();
+  buttonFeed.show();
+  menuY = 380;
 }
 
 function goToBedroom() {
@@ -173,6 +284,8 @@ function goToBedroom() {
   buttonSleep.show();
   buttonWakeUp.hide();
   buttonMinigame.hide();
+  buttonFeed.show();
+  menuY = 380;
   } else if (night == true) {
   buttonSleep.hide();
   buttonWakeUp.show();
@@ -182,7 +295,6 @@ function goToBedroom() {
   buttonRamen.hide();
   buttonSushi.hide();
   currentLocation = "bedroom";
-  menuY = 380;
 }
 
 function goToShop() {
@@ -194,7 +306,15 @@ function goToShop() {
   buttonOnigiri.show();
   buttonRamen.show();
   buttonSushi.show();
+  buttonFeed.hide();
   menuY = 340;
+
+  if (menuOpen) {
+    buttonFeedOnigiri.hide();
+    buttonFeedSushi.hide();
+    buttonFeedRamen.hide();
+    menuOpen = false;
+  }
 }
 
 function goToGarden() {
@@ -206,7 +326,15 @@ function goToGarden() {
   buttonOnigiri.hide();
   buttonRamen.hide();
   buttonSushi.hide();
+  buttonFeed.hide();
   menuY = 340;
+
+  if (menuOpen) {
+    buttonFeedOnigiri.hide();
+    buttonFeedSushi.hide();
+    buttonFeedRamen.hide();
+    menuOpen = false;
+  }
 }
 
 function Background() {
@@ -250,13 +378,13 @@ function SeiaSprites() {
 
   if (night === true && currentLocation === "bedroom") {
     showSeiaSleep = true;
-  } 
-  else if (statHunger <= 0 && statHealth <= 50) {
+  }
+  else if (statHealth <= 50) {
     showSeiaLowHealth = true;
-  } 
+  }
   else if (statHunger <= 0) {
     showSeiaHungry = true;
-  } 
+  }
   else {
     showSeiaNeutral = true;
   }
@@ -265,7 +393,7 @@ function SeiaSprites() {
 function draw() {
 
 
-
+  Idle();
   SeiaSprites();
   Background();
   background(220);
@@ -284,7 +412,7 @@ function draw() {
   }
 
 
-  statHunger -= 1
+  statHunger -= 0.01
   if (statHunger <= 0) {
     statHunger = 0
   }
@@ -293,9 +421,9 @@ function draw() {
   }
 
   if (showGarden == false) {
-  statHappiness -= 0.5;
+  statHappiness -= 0.02;
   } else if (showGarden) {
-  statHappiness += 0.5;
+  statHappiness += 0.1;
   }
   if (statHappiness <= 0) {
     statHappiness = 0
@@ -305,9 +433,9 @@ function draw() {
   }
 
   if (night == false) {
-  statEnergy -= 0.5;
+  statEnergy -= 0.03;
   } else if (night == true) {
-  statEnergy += 0.5;
+  statEnergy += 0.07;
   }
   if (statEnergy <= 0) {
     statEnergy = 0
@@ -331,19 +459,19 @@ function draw() {
   }
 
   if (showSeiaNeutral) {
-    image(imgSeiaNeutral, 400, 100, 400, 678);
+    drawSeia(imgSeiaNeutral);
   }
 
   if (showSeiaSleep) {
-    image(imgSeiaSleep, 400, 100, 400, 678);
+    drawSeia(imgSeiaSleep);
   }
 
   if (showSeiaHungry) {
-    image(imgSeiaHungry, 400, 100, 400, 678);
+    drawSeia(imgSeiaHungry);
   }
 
   if (showSeiaLowHealth) {
-    image(imgSeiaLowHealth, 400, 100, 400, 678);
+    drawSeia(imgSeiaLowHealth);
   }
 
   if (showShop) {
@@ -399,6 +527,6 @@ function draw() {
   text("Ramen x" + ramen, 30, 320)
 
   if (statHunger <= 0) {
-    statHealth = max(0, statHealth - 1);
+    statHealth -= 0.1;
   }
 }
