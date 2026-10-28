@@ -4,6 +4,13 @@ let statHappiness = 100;
 let statHealth = 100;
 
 let coins = 0;
+let onigiri = 0;
+let sushi = 0;
+let ramen = 0;
+
+let barX = 51;
+let bounce = 0;
+let menuY = 380;
 
 let imgBedroomDay;
 let imgBedroomNight;
@@ -28,15 +35,19 @@ let buttonSleep;
 let buttonWakeUp;
 
 let buttonMinigame;
+let buttonOnigiri;
+let buttonSushi;
+let buttonRamen;
 
 let imgSeiaNeutral;
 let imgSeiaSleep;
 let imgSeiaHungry;
+let imgSeiaLowHealth;
 
 let showSeiaNeutral = true;
 let showSeiaSleep = false;
 let showSeiaHungry = false;
-
+let showSeiaLowHealth = false;
 
 
 
@@ -44,6 +55,7 @@ function preload() {
   imgSeiaNeutral = loadImage("sprites/Seia_neutral.png");
   imgSeiaSleep = loadImage("sprites/Seia_sleeping.png");
   imgSeiaHungry = loadImage("sprites/Seia_hungry.png");
+  imgSeiaLowHealth = loadImage("sprites/Seia_lowhealth.png");
   imgBedroomDay = loadImage("sprites/Background_BedroomDay.jpg");
   imgBedroomNight = loadImage("sprites/Background_BedroomNight.jpg");
   imgShop = loadImage("sprites/Background_Shop.jpg");
@@ -72,7 +84,7 @@ function setup() {
   buttonGarden.size(150, 50);
   buttonGarden.mousePressed(goToGarden);
 
-  buttonMinigame = createButton("");
+  buttonMinigame = createButton("Press");
   buttonMinigame.position(62, 540);
   buttonMinigame.size(150, 50);
   buttonMinigame.mousePressed(press);
@@ -87,10 +99,57 @@ function setup() {
   buttonSleep.position(8, 558);
   buttonSleep.size(150, 50);
   buttonSleep.mousePressed(sleep);
+
+  buttonOnigiri = createButton("5 coins");
+  buttonOnigiri.position(250, 450);
+  buttonOnigiri.size(100, 30);
+  buttonOnigiri.mousePressed(Onigiri);
+  buttonOnigiri.hide();
+
+  buttonSushi = createButton("10 coins");
+  buttonSushi.position(375, 450);
+  buttonSushi.size(100, 30);
+  buttonSushi.mousePressed(Sushi);
+  buttonSushi.hide();
+
+  buttonRamen = createButton("20 coins");
+  buttonRamen.position(500, 450);
+  buttonRamen.size(100, 30);
+  buttonRamen.mousePressed(Ramen);
+  buttonRamen.hide();
+}
+
+function Onigiri() {
+  if (coins >= 5) {
+  onigiri += 1;
+  coins -= 5;
+  } else {
+    return;
+  }
+}
+
+function Sushi() {
+  if (coins >= 10) {
+  sushi += 1;
+  coins -= 10;
+  } else {
+    return;
+  }
+}
+
+function Ramen() {
+  if (coins >= 20) {
+  ramen += 1;
+  coins -= 20;
+  } else {
+    return;
+  }
 }
 
 function press() {
-  //
+  if (barX <= 140 && barX >= 120) {
+  coins += 1
+  }
 }
 
 function sleep() {
@@ -99,7 +158,6 @@ function sleep() {
   buttonSleep.hide();
   buttonWakeUp.show();
   buttonMinigame.hide();
-
 }
 
 function wakeUp() {
@@ -120,8 +178,11 @@ function goToBedroom() {
   buttonWakeUp.show();
   buttonMinigame.hide();
   }
-
+  buttonOnigiri.hide();
+  buttonRamen.hide();
+  buttonSushi.hide();
   currentLocation = "bedroom";
+  menuY = 380;
 }
 
 function goToShop() {
@@ -130,6 +191,10 @@ function goToShop() {
   buttonSleep.hide();
   buttonWakeUp.hide();
   buttonMinigame.show();
+  buttonOnigiri.show();
+  buttonRamen.show();
+  buttonSushi.show();
+  menuY = 340;
 }
 
 function goToGarden() {
@@ -138,6 +203,10 @@ function goToGarden() {
   buttonSleep.hide();
   buttonWakeUp.hide();
   buttonMinigame.hide();
+  buttonOnigiri.hide();
+  buttonRamen.hide();
+  buttonSushi.hide();
+  menuY = 340;
 }
 
 function Background() {
@@ -165,30 +234,29 @@ function Background() {
 }
 
 function SeiaSprites() {
-  // Hide Seia by default
   showSeiaNeutral = false;
   showSeiaSleep = false;
   showSeiaHungry = false;
+  showSeiaLowHealth = false;
 
-  // Seia should not appear in the shop
   if (currentLocation === "shop") {
     return;
   }
 
-  // Seia should not appear in the garden at night
+
   if (currentLocation === "garden" && night === true) {
     return;
   }
 
-  // Seia sleeps in the bedroom at night
   if (night === true && currentLocation === "bedroom") {
     showSeiaSleep = true;
   } 
-  // Seia appears hungry if hunger reaches zero
+  else if (statHunger <= 0 && statHealth <= 50) {
+    showSeiaLowHealth = true;
+  } 
   else if (statHunger <= 0) {
     showSeiaHungry = true;
   } 
-  // Otherwise, show her neutral sprite
   else {
     showSeiaNeutral = true;
   }
@@ -202,6 +270,19 @@ function draw() {
   Background();
   background(220);
   textSize(20);
+
+  if (barX <= 205 && bounce == 0) {
+    barX += 2;
+  } else if (barX >= 51 && bounce == 1) {
+    barX -= 2;
+  }
+
+  if (barX == 205 && bounce == 0) {
+    bounce = 1;
+  } else if (barX == 51 && bounce == 1) {
+    bounce = 0;
+  }
+
 
   statHunger -= 1
   if (statHunger <= 0) {
@@ -261,10 +342,32 @@ function draw() {
     image(imgSeiaHungry, 400, 100, 400, 678);
   }
 
+  if (showSeiaLowHealth) {
+    image(imgSeiaLowHealth, 400, 100, 400, 678);
+  }
+
   if (showShop) {
     image(imgShop, 0, 0, 1000, 600);
+    fill(100, 100, 100);
     rect(30, 400, 200, 200);
+    fill(255, 255, 255);
+    rect(50, 430, 160, 60);
+    fill(0, 255, 0);
+    rect(120, 430, 20, 60);
+    fill(0, 0, 0);
+    rect(barX, 430, 3, 60);
+
+    fill(0, 0, 0, 100);
+    rect(230, 400, 400, 90);
+
+    fill(255, 255, 255);
+    text("Onigiri", 265, 430);
+    text("Sushi", 390, 430);
+    text("Ramen", 510, 430);
   }
+
+  fill(0, 0, 0, 100);
+  rect(0, 0, 150, menuY);
 
   fill(255, 255, 255);
   rect(30, 50, 100, 30);
@@ -289,6 +392,11 @@ function draw() {
   text("Energy", 47, 122);
   text("Happiness", 33, 172);
   text("Health", 52, 222);
+  fill(255, 255, 255);
+  text("Coins x" + coins, 30, 30);
+  text("Onigiri x" + onigiri, 30, 260)
+  text("Sushi x" + sushi, 30, 290)
+  text("Ramen x" + ramen, 30, 320)
 
   if (statHunger <= 0) {
     statHealth = max(0, statHealth - 1);
