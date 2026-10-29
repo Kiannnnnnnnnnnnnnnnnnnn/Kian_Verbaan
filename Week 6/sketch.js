@@ -3,7 +3,7 @@ let statEnergy = 100;
 let statHappiness = 100;
 let statHealth = 100;
 
-let coins = 0;
+let coins = 20;
 let onigiri = 0;
 let sushi = 0;
 let ramen = 0;
@@ -31,6 +31,7 @@ let currentLocation = "bedroom";
 
 let night = false;
 let menuOpen = false;
+let showDeath = false;
 
 let buttonBedroom;
 let buttonShop;
@@ -49,30 +50,51 @@ let buttonFeedSushi;
 let buttonFeedRamen;
 
 let imgSeiaNeutral;
+let imgSeiaTalking;
+let imgSeiaHappy;
 let imgSeiaSleep;
 let imgSeiaHungry;
 let imgSeiaLowHealth;
+let imgSeiaDead;
 
 let showSeiaNeutral = true;
+let showSeiaTalking = false;
+let showSeiaHappy = false;
 let showSeiaSleep = false;
 let showSeiaHungry = false;
 let showSeiaLowHealth = false;
+
+let audioThanks1;
+let audioThanks2;
+let audioIdle1;
+let audioIdle2;
+let audioIdle3;
+let audioIdle4;
+let audioIdle5;
 
 
 
 function preload() {
   imgSeiaNeutral = loadImage("sprites/Seia_neutral.png");
+  imgSeiaTalking = loadImage("sprites/Seia_talking.png");
+  imgSeiaHappy = loadImage("sprites/Seia_happy.png");
   imgSeiaSleep = loadImage("sprites/Seia_sleeping.png");
   imgSeiaHungry = loadImage("sprites/Seia_hungry.png");
   imgSeiaLowHealth = loadImage("sprites/Seia_lowhealth.png");
+  imgSeiaDead = loadImage("sprites/Seia_dead.jpg");
   imgBedroomDay = loadImage("sprites/Background_BedroomDay.jpg");
   imgBedroomNight = loadImage("sprites/Background_BedroomNight.jpg");
   imgShop = loadImage("sprites/Background_Shop.jpg");
   imgGarden = loadImage("sprites/Background_Garden.jpg");
   imgGardenNight = loadImage("sprites/Background_GardenNight.jpg");
 
-  audioSeiaGreeting = loadSound("audio/SeiaGreeting1.mp3");
-  audioSeiaGreeting2 = loadSound("audio/SeiaGreeting2.mp3");
+  audioThanks1 = loadSound("audio/SeiaThanks1.mp3");
+  audioThanks2 = loadSound("audio/SeiaThanks2.mp3");
+  audioIdle1 = loadSound("audio/SeiaIdle1.mp3");
+  audioIdle2 = loadSound("audio/SeiaIdle2.mp3");
+  audioIdle3 = loadSound("audio/SeiaIdle3.mp3");
+  audioIdle4 = loadSound("audio/SeiaIdle4.mp3");
+  audioIdle5 = loadSound("audio/SeiaIdle5.mp3");
 }
 
 function setup() {
@@ -152,6 +174,43 @@ function setup() {
   buttonFeedRamen.hide();
 }
 
+function seiaDead() {
+  buttonBedroom.hide();
+  buttonFeed.hide();
+  buttonFeedOnigiri.hide();
+  buttonFeedRamen.hide();
+  buttonFeedSushi.hide();
+  buttonGarden.hide();
+  buttonMinigame.hide();
+  buttonOnigiri.hide();
+  buttonRamen.hide();
+  buttonShop.hide();
+  buttonSleep.hide();
+  buttonSushi.hide();
+  buttonWakeUp.hide();
+
+  showDeath = true;
+}
+
+function Thanks() {
+
+audioIdle1.stop();
+audioIdle2.stop();
+audioIdle3.stop();
+audioIdle4.stop();
+audioIdle5.stop();
+audioThanks1.stop();
+audioThanks2.stop();
+
+  chosenThanks = floor(random(1, 3));
+  if (chosenThanks === 1) {
+    audioThanks1.play();
+  } else {
+    audioThanks2.play();
+}
+
+}
+
 function Idle() {
 
   if (statHunger > 0 && night == false && statHealth > 50) {
@@ -165,6 +224,21 @@ function Idle() {
     } else if (chosenX > seiaX) {
       seiaX = min(chosenX, seiaX + 1);
       seiaFacing = -1;
+    }
+
+    if ((showBedroom || showGarden) && frameCount % 600 === 0) {
+      chosenIdle = floor(random(1, 6));
+      if (chosenIdle === 1) {
+        audioIdle1.play();
+      } else if (chosenIdle === 2) {
+        audioIdle2.play();
+      } else if (chosenIdle === 3) {
+        audioIdle3.play();
+      } else if (chosenIdle === 4) {
+        audioIdle4.play();
+      } else if (chosenIdle === 5) {
+        audioIdle5.play();
+      }
     }
   }
 }
@@ -202,6 +276,7 @@ function FeedOnigiri() {
   if (onigiri > 0) {
   onigiri -= 1;
   statHunger += 5;
+  Thanks();
   }
 }
 
@@ -209,6 +284,7 @@ function FeedSushi() {
   if (sushi > 0) {
   sushi -= 1;
   statHunger += 10;
+  Thanks();
   }
 }
 
@@ -216,6 +292,7 @@ function FeedRamen() {
   if (ramen > 0) {
   ramen -= 1;
   statHunger += 20;
+  Thanks();
   }
 }
 
@@ -363,6 +440,8 @@ function Background() {
 
 function SeiaSprites() {
   showSeiaNeutral = false;
+  showSeiaTalking = false;
+  showSeiaHappy = false;
   showSeiaSleep = false;
   showSeiaHungry = false;
   showSeiaLowHealth = false;
@@ -376,7 +455,17 @@ function SeiaSprites() {
     return;
   }
 
-  if (night === true && currentLocation === "bedroom") {
+  if (audioThanks1.isPlaying() || audioThanks2.isPlaying()) {
+    showSeiaHappy = true;
+  }
+  else if (audioIdle1.isPlaying() ||
+           audioIdle2.isPlaying() ||
+           audioIdle3.isPlaying() ||
+           audioIdle4.isPlaying() ||
+           audioIdle5.isPlaying()) {
+    showSeiaTalking = true;
+           }
+  else if (night === true && currentLocation === "bedroom") {
     showSeiaSleep = true;
   }
   else if (statHealth <= 50) {
@@ -462,6 +551,14 @@ function draw() {
     drawSeia(imgSeiaNeutral);
   }
 
+  if (showSeiaTalking) {
+    drawSeia(imgSeiaTalking);
+  }
+
+  if (showSeiaHappy) {
+    drawSeia(imgSeiaHappy);
+  }
+
   if (showSeiaSleep) {
     drawSeia(imgSeiaSleep);
   }
@@ -526,7 +623,23 @@ function draw() {
   text("Sushi x" + sushi, 30, 290)
   text("Ramen x" + ramen, 30, 320)
 
+  if (statEnergy <= 0) {
+    statHealth -= 0.1;
+  }
+
+  if (statHappiness <= 0) {
+    statHealth -= 0.1;
+  }
+
   if (statHunger <= 0) {
     statHealth -= 0.1;
+  }
+
+  if (statHealth <= 0) {
+    seiaDead();
+  }
+
+  if (showDeath) {
+    image(imgSeiaDead, 0, 0, 1000, 600);
   }
 }
