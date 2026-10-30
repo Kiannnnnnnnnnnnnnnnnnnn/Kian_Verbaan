@@ -1,9 +1,11 @@
+// all stats
 let statHunger = 100;
 let statEnergy = 100;
 let statHappiness = 100;
 let statHealth = 100;
 
-let coins = 20;
+// all amounts
+let coins = 0;
 let onigiri = 0;
 let sushi = 0;
 let ramen = 0;
@@ -15,12 +17,14 @@ let seiaX = 400;
 let chosenX = 400;
 let seiaFacing = 1;
 
+// backgrounds
 let imgBedroomDay;
 let imgBedroomNight;
 let imgShop;
 let imgGarden;
 let imgGardenNight;
 
+// variables to show backgrounds
 let showBedroom = true;
 let showBedroomNight = false;
 let showShop = false;
@@ -33,6 +37,7 @@ let night = false;
 let menuOpen = false;
 let showDeath = false;
 
+// buttons
 let buttonBedroom;
 let buttonShop;
 let buttonGarden;
@@ -49,6 +54,7 @@ let buttonFeedOnigiri;
 let buttonFeedSushi;
 let buttonFeedRamen;
 
+// all sprites
 let imgSeiaNeutral;
 let imgSeiaTalking;
 let imgSeiaHappy;
@@ -57,6 +63,7 @@ let imgSeiaHungry;
 let imgSeiaLowHealth;
 let imgSeiaDead;
 
+// variables for showing sprites
 let showSeiaNeutral = true;
 let showSeiaTalking = false;
 let showSeiaHappy = false;
@@ -64,6 +71,7 @@ let showSeiaSleep = false;
 let showSeiaHungry = false;
 let showSeiaLowHealth = false;
 
+// audio
 let audioThanks1;
 let audioThanks2;
 let audioIdle1;
@@ -73,7 +81,7 @@ let audioIdle4;
 let audioIdle5;
 
 
-
+// preloading all audio and sprites
 function preload() {
   imgSeiaNeutral = loadImage("sprites/Seia_neutral.png");
   imgSeiaTalking = loadImage("sprites/Seia_talking.png");
@@ -100,6 +108,64 @@ function preload() {
 function setup() {
   createCanvas(1000, 600);
 
+  // getting data from local storage
+  let savedHunger = getItem("Hunger");
+  if (savedHunger == null) {
+    statHunger = 100;
+  } else {
+    statHunger = savedHunger;
+  }
+
+  let savedEnergy = getItem("Energy");
+  if (savedEnergy == null) {
+    statEnergy = 100;
+  } else {
+    statEnergy = savedEnergy;
+  }
+
+  let savedHappiness = getItem("Happiness");
+  if (savedHappiness == null) {
+    statHappiness = 100;
+  } else {
+    statHappiness = savedHappiness;
+  }
+
+  let savedHealth = getItem("Health");
+  if (savedHealth == null) {
+    statHealth = 100;
+  } else {
+    statHealth = savedHealth;
+  }
+
+  let savedCoins = getItem("Coins");
+  if (savedCoins == null) {
+    coins = 0;
+  } else {
+    coins = savedCoins;
+  }
+
+  let savedOnigiri = getItem("Onigiri");
+  if (savedOnigiri == null) {
+    onigiri = 0;
+  } else {
+    onigiri = savedOnigiri;
+  }
+
+  let savedSushi = getItem("Sushi");
+  if (savedSushi == null) {
+    sushi = 0;
+  } else {
+    sushi = savedSushi;
+  }
+
+  let savedRamen = getItem("Ramen");
+  if (savedRamen == null) {
+    ramen = 0;
+  } else {
+    ramen = savedRamen;
+  }
+
+  // all buttons
   buttonBedroom = createButton("Bedroom");
   buttonBedroom.position(275, 558);
   buttonBedroom.size(150, 50);
@@ -174,6 +240,17 @@ function setup() {
   buttonFeedRamen.hide();
 }
 
+function saveStats() {
+  storeItem("Hunger", statHunger);
+  storeItem("Energy", statEnergy);
+  storeItem("Happiness", statHappiness);
+  storeItem("Health", statHealth);
+  storeItem("Coins", coins);
+  storeItem("Onigiri", onigiri);
+  storeItem("Sushi", sushi);
+  storeItem("Ramen", ramen);
+}
+
 function seiaDead() {
   buttonBedroom.hide();
   buttonFeed.hide();
@@ -192,6 +269,7 @@ function seiaDead() {
   showDeath = true;
 }
 
+// thanking you when feeding her
 function Thanks() {
 
 audioIdle1.stop();
@@ -207,10 +285,11 @@ audioThanks2.stop();
     audioThanks1.play();
   } else {
     audioThanks2.play();
-}
+  }
 
 }
 
+// walking around and talking when idle
 function Idle() {
 
   if (statHunger > 0 && night == false && statHealth > 50) {
@@ -243,6 +322,7 @@ function Idle() {
   }
 }
 
+// flipping the sprite if necessary
 function drawSeia(img) {
   push();
 
@@ -257,6 +337,7 @@ function drawSeia(img) {
   pop();
 }
 
+// function to open feeding menu
 function Choice() {
 
   menuOpen = !menuOpen;
@@ -272,6 +353,7 @@ function Choice() {
   }
 }
 
+// functions for feeding
 function FeedOnigiri() {
   if (onigiri > 0) {
   onigiri -= 1;
@@ -296,6 +378,7 @@ function FeedRamen() {
   }
 }
 
+// functions for buying food
 function Onigiri() {
   if (coins >= 2) {
   onigiri += 1;
@@ -323,12 +406,14 @@ function Ramen() {
   }
 }
 
+// function for the minigame
 function press() {
   if (barX <= 140 && barX >= 120) {
   coins += 1
   }
 }
 
+// all functions to change the location, menus etc
 function sleep() {
   night = true;
 
@@ -414,6 +499,7 @@ function goToGarden() {
   }
 }
 
+// function to change to the right background
 function Background() {
   showBedroom = false;
   showBedroomNight = false;
@@ -438,6 +524,7 @@ function Background() {
   }
 }
 
+// function to show the right sprite
 function SeiaSprites() {
   showSeiaNeutral = false;
   showSeiaTalking = false;
@@ -480,14 +567,16 @@ function SeiaSprites() {
 }
 
 function draw() {
-
-
+  Background();
   Idle();
   SeiaSprites();
-  Background();
+
   background(220);
   textSize(20);
 
+  saveStats();
+
+  // makes the minigame work by bouncing the line back and forth
   if (barX <= 205 && bounce == 0) {
     barX += 2;
   } else if (barX >= 51 && bounce == 1) {
@@ -500,7 +589,7 @@ function draw() {
     bounce = 0;
   }
 
-
+  // making the stats go down
   statHunger -= 0.01
   if (statHunger <= 0) {
     statHunger = 0
@@ -533,6 +622,7 @@ function draw() {
     statEnergy = 100
   }
 
+  // makes all images display correctly
   if (showBedroomNight) {
     image(imgBedroomNight, 0, 0, 1000, 600);
   }
@@ -571,6 +661,7 @@ function draw() {
     drawSeia(imgSeiaLowHealth);
   }
 
+  // all extra things to show for the shop
   if (showShop) {
     image(imgShop, 0, 0, 1000, 600);
     fill(100, 100, 100);
@@ -612,6 +703,7 @@ function draw() {
   fill(255, 0, 0);
   rect(30, 200, statHealth, 30);
 
+  // stats menu
   fill(0, 0, 0);
   text("Hunger", 47, 72);
   text("Energy", 47, 122);
@@ -623,6 +715,7 @@ function draw() {
   text("Sushi x" + sushi, 30, 290)
   text("Ramen x" + ramen, 30, 320)
 
+  // makes health go down for every other stat that's at 0
   if (statEnergy <= 0) {
     statHealth -= 0.1;
   }
@@ -635,11 +728,22 @@ function draw() {
     statHealth -= 0.1;
   }
 
+  // makes health go up when all stats are 80+
+  if (statHunger >= 80 && statEnergy >= 80 && statHappiness >= 80) {
+    statHealth += 0.1;
+  }
+
+  if (statHealth >= 100) {
+    statHealth = 100;
+  }
+
   if (statHealth <= 0) {
     seiaDead();
   }
 
+  // shows death and clears local storage for game restart
   if (showDeath) {
     image(imgSeiaDead, 0, 0, 1000, 600);
+    clearStorage();
   }
 }
