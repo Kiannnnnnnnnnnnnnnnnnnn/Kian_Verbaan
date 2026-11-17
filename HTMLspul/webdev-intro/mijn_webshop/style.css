@@ -1,0 +1,36 @@
+        .row {
+            display: flex; gap: 20px;
+            img { width: 100%; }
+            display: flex; gap: 20px;
+            justify-content: center;
+        }
+        .row2 {
+            display: flex; gap: 20px;
+            img { width: 100%; }
+            display: flex; gap: 140px;
+            justify-content: center;
+        }
+        .row a {height: 450px;}
+
+        .birthday {height: 450px;}
+        .anniversary15 {height: 450px;}
+        .sakura {height: 450px;}
+        .maifu {height: 450px;}
+        .symphony5th {height: 450px;}
+        .symphony10th {height: 450px;}
+
+.product {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.product img {
+    width: 50%;
+    height: auto;
+}
+
+.right-text {
+    width: 50%;
+    font-size: 20px;
+}
